@@ -1,11 +1,19 @@
 // Assignment code here
+specialChar = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "\:", "\;", " < ", "=", ">", "?", "@", "[", "\\", "]", " ^ ", "_", "`", "{", "|", "}", "~"];
+// Numeric characters
+number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+// Alphabetical characters
+char = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+// Space is for the Uppercase conversion
+space = [];
+var pick;
+var callUpper = function (x) {
+  return x.toUpperCase();
+}
+charUpper = char.map(callUpper);
+
 function generatePassword(params) {
-
-var charListAlpha="abcdefghijklmnopqrstuvwxyz";
-var charListNum="123456789";
-var charListSpec="!@#_";
-
-var password = '';
+  var password = [];
 
 var pLength = window.prompt ('What length do you want for your password? Between 8 and 128 characters.');
 // Turning the selection into a number ot validate it. 
@@ -22,45 +30,78 @@ console.log(capLen)
 console.log(specLen)
 console.log(lowerLen+numLen+capLen+specLen)
 */
-var lower = window.prompt('Do you want lowercase letters in your password? Y or N ');
+var lower = window.prompt('Do you want lowercase letters in your password? Y or N ').toUpperCase();
 
-var upper = window.prompt('Do you want uppercase letters in your password? Y or N ');
+var upper = window.prompt('Do you want uppercase letters in your password? Y or N ').toUpperCase();
 
-var numeric = window.prompt('Do you want numbers in your password? Y or N ');
+var numeric = window.prompt('Do you want numbers in your password? Y or N ').toUpperCase();
 
-var special = window.prompt('Do you want special characters in your password? Y or N ');
+var special = window.prompt('Do you want special characters in your password? Y or N ').toUpperCase();
 
-var lowerLen = Math.ceil(pLength/3);
-var numLen = Math.ceil(pLength/3);
-var capLen = lowerLen - 3;
-var specLen = pLength - lowerLen - numLen -capLen;
-
-if (lower == 'Y') {
-  for (i = 0; i < lowerLen; i++) {
-    password+= charListAlpha.charAt(Math.floor(Math.random()*charListAlpha.length));
-    
-  }
+if (lower == 'N' && numeric == 'N' && upper == 'N' && special == 'N') {
+  window.alert('Atleast 1 character type needs to be selected.')
 }
-if (numeric == 'Y') {
-  for (i = 0; i < numLen; i++) {
-    password+= charListNum.charAt(Math.floor(Math.random()*charListNum.length));
-    
-  }
+
+//If all choices are selected
+if (lower == 'Y' && numeric == 'Y' && upper == 'Y' && special == 'Y') {
+    pick = char.concat(number, specialChar,charUpper)
 }
-if (upper == 'Y') {
-  for (i = 0; i < capLen; i++) {
-    password+= charListAlpha.charAt(Math.floor(Math.random()*charListAlpha.length)).toUpperCase();
-    
-  }
+
+// If only 3 are selected
+else if (numeric == 'Y' && upper == 'Y' && special == 'Y') {
+  pick = number.concat(specialChar, charUpper)
 }
-if (special == 'Y') {
-  for (i = 0; i < specLen; i++) {
-    password+= charListSpec.charAt(Math.floor(Math.random()*charListSpec.length));
-    
-  }
+
+else if (lower == 'Y' && upper == 'Y' && special == 'Y') {
+  pick = char.concat(specialChar, charUpper)
 }
-password=password.split('').sort(function(){return 0.6-Math.random()}).join('');
-return password;
+else if (lower == 'Y' && numeric == 'Y' && special == 'Y') {
+  pick = char.concat(specialChar ,number)
+}
+else if (lower == 'Y' && numeric == 'Y' && upper == 'Y') {
+  pick = char.concat(number,charUpper)
+}
+
+// 2 Choices selected
+else if (upper == 'Y' && special == 'Y') {
+  pick = specialChar.concat(charUpper)
+}
+else if (lower == 'Y' && numeric == 'Y') {
+  pick = char.concat(number)
+}
+
+else if (numeric == 'Y' && special == 'Y') {
+  pick = number.concat(specialChar)
+}
+else if (lower == 'Y' && upper == 'Y') {
+ pick = char.concat(charUpper)
+}
+else if (lower == 'Y' && special == 'Y') {
+  pick = char.concat(specialChar)
+}
+else if (numeric == 'Y' && upper == 'Y') {
+  pick = number.concat(charUpper);
+}
+// only 1 selected
+
+else if (lower == 'Y') {
+  pick = char;
+}
+else if (numeric == 'Y') {
+  pick = number;
+}
+else if (upper == 'Y') {
+  pick = charUpper;
+}
+else if (special == 'Y') {
+  pick = specialChar;
+}
+for (var j = 0; j < pLength; j++){
+  var choices = pick[Math.floor(Math.random()* pick.length)];
+  password.push(choices)
+}
+var newPassword = password.join("")
+return newPassword;
 }
 
 // Get references to the #generate element
